@@ -12,7 +12,6 @@ use Response;
 
 class productController extends AppBaseController
 {
-    /** @var productRepository $productRepository*/
     private $productRepository;
 
     public function __construct(productRepository $productRepo)
@@ -20,13 +19,6 @@ class productController extends AppBaseController
         $this->productRepository = $productRepo;
     }
 
-    /**
-     * Display a listing of the product.
-     *
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function index(Request $request)
     {
         $products = $this->productRepository->all();
@@ -35,23 +27,11 @@ class productController extends AppBaseController
             ->with('products', $products);
     }
 
-    /**
-     * Show the form for creating a new product.
-     *
-     * @return Response
-     */
     public function create()
     {
         return view('products.create');
     }
 
-    /**
-     * Store a newly created product in storage.
-     *
-     * @param CreateproductRequest $request
-     *
-     * @return Response
-     */
     public function store(CreateproductRequest $request)
     {
         $input = $request->all();
@@ -63,13 +43,6 @@ class productController extends AppBaseController
         return redirect(route('products.index'));
     }
 
-    /**
-     * Display the specified product.
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
     public function show($id)
     {
         $product = $this->productRepository->find($id);
@@ -83,13 +56,6 @@ class productController extends AppBaseController
         return view('products.show')->with('product', $product);
     }
 
-    /**
-     * Show the form for editing the specified product.
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
     public function edit($id)
     {
         $product = $this->productRepository->find($id);
@@ -103,14 +69,6 @@ class productController extends AppBaseController
         return view('products.edit')->with('product', $product);
     }
 
-    /**
-     * Update the specified product in storage.
-     *
-     * @param int $id
-     * @param UpdateproductRequest $request
-     *
-     * @return Response
-     */
     public function update($id, UpdateproductRequest $request)
     {
         $product = $this->productRepository->find($id);
@@ -128,15 +86,6 @@ class productController extends AppBaseController
         return redirect(route('products.index'));
     }
 
-    /**
-     * Remove the specified product from storage.
-     *
-     * @param int $id
-     *
-     * @throws \Exception
-     *
-     * @return Response
-     */
     public function destroy($id)
     {
         $product = $this->productRepository->find($id);
@@ -152,5 +101,12 @@ class productController extends AppBaseController
         Flash::success('Product deleted successfully.');
 
         return redirect(route('products.index'));
+    }
+
+    public function displayGrid(Request $request)
+    {
+        $products = \App\Models\Product::all();
+        
+        return view('products.displaygrid')->with('products', $products);
     }
 }
